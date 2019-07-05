@@ -24,8 +24,7 @@ services:
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DO_AUTH_TOKEN_FILE: '/home/wilco/.secrets/certbot/digitalocean.ini'
-#          - digitalocean_api_token
+      DO_AUTH_TOKEN_FILE: /home/wilco/.secrets/certbot/digitalocean.ini
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
