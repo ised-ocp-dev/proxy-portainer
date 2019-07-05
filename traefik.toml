@@ -1,10 +1,11 @@
-debug = false
+
 logLevel = "DEBUG"
 
 defaultEntryPoints = ["http", "https"]
 
 [api]
   entryPoint = "traefik"
+  dashboard = true
 
 [retry]
 
@@ -20,11 +21,15 @@ defaultEntryPoints = ["http", "https"]
   address = ":80"
     [entryPoints.http.redirect]
       entryPoint = "https"
+
   [entryPoints.traefik]
-#  address = "monitor.dev.tribus.studio:443"
-  address = ":8080"
-    [entryPoints.traefik.auth.basic]
-    users = ["admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"]
+  address = ":8081"
+    [entryPoints.traefik.auth]
+      [entryPoints.traefik.auth.basic]
+      users = [
+        "admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"
+       ]
+
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
