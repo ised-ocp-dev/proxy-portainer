@@ -30,7 +30,7 @@ defaultEntryPoints = ["http", "https"]
   address = ":443"
     [entryPoints.https.tls]
   [entryPoints.traefik]
-    address = ":8080"
+    address = "monitor.dev.tribus.studio:80"
     [entryPoints.traefik.auth.basic]
     users = ["admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1",]
 
