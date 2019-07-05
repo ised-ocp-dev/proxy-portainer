@@ -8,25 +8,25 @@ services:
     restart: unless-stopped
     command: -c /dev/null --web --docker --logLevel=DEBUG
     networks:
-      - orchestration
-      - breakout
+      - proxy
+#      - breakout
     ports:
       - '80:80'
       - '8080:8080'
       # - '443:443'
     volumes:
-      # - ./traefik.toml:/traefik.toml
-      # - ./acme.json:/acme.json
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
-      - 'traefik.frontend.rule=Host:traefik.${PROJECT_BASE_URL}'
+      - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
 
 networks:
-  orchestration:
+  proxy:
     driver: bridge
     attachable: true
-  breakout:
-    external:
-      name: breakout_d8_docker_default
+#  breakout:
+#    external:
+#      name: breakout_d8_docker_default

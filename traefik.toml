@@ -1,9 +1,16 @@
+logLevel = "DEBUG"
 defaultEntryPoints = ["http", "https"]
 
+# WEB interface of Traefik - it will show web page with overview of frontend and backend configurations
 [web]
 address = ":8080"
   [web.auth.basic]
   users = ["admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"]
+
+# Connection to docker host system (docker.sock)
+[docker]
+domain = "tribus.studio"
+watch = true
 
 [entryPoints]
   [entryPoints.http]
@@ -15,8 +22,9 @@ address = ":8080"
     [entryPoints.https.tls]
 
 [acme]
-email = "wilco@nurf.com"
-storage = "acme.json"
-entryPoint = "https"
-onHostRule = true
-onDemand = false
+  email = "wilco@nurf.com"
+  storage = "acme.json"
+  entryPoint = "https"
+  acmeLogging=true
+  onDemand=false
+  OnHostRule=true
