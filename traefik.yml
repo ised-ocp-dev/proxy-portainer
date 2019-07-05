@@ -10,7 +10,7 @@ services:
     restart: always
     container_name: "${PROJECT_NAME}_traefik"
 #    restart: unless-stopped
-#    command: -c /dev/null --web --docker --logLevel=DEBUG
+    command: -c /dev/null --web --docker --logLevel=DEBUG
     networks:
       - proxy
 #      - internal
@@ -33,10 +33,10 @@ services:
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
       - 'traefik.docker.network=external'
       - 'traefik.enable=true'
-#      - 'traefik.frontend.headers.forceSTSHeader=true'
-#      - 'traefik.frontend.headers.STSSeconds=315360000'
-#      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-#      - 'traefik.frontend.headers.STSPreload=true'
+      - 'traefik.frontend.headers.forceSTSHeader=true'
+      - 'traefik.frontend.headers.STSSeconds=315360000'
+      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+      - 'traefik.frontend.headers.STSPreload=true'
 
 networks:
   proxy:
