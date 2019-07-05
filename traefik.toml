@@ -1,13 +1,13 @@
 debug = false
-logLevel = "DEBUG"
+logLevel = "ERROR"
 
 defaultEntryPoints = ["http", "https"]
 
 # WEB interface of Traefik - it will show web page with overview of frontend and backend configurations
-[web]
-address = ":8080"
-  [web.auth.basic]
-  users = ["admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"]
+#[web]
+#address = ":8080"
+#  [web.auth.basic]
+#  users = ["admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"]
 
 [api]
   entryPoint = "traefik"
