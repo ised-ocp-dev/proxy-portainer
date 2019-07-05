@@ -1,0 +1,32 @@
+version: "3.2"
+
+services:
+  traefik:
+    image: traefik
+    restart: unless-stopped
+    container_name: "${PROJECT_NAME}_traefik"
+    restart: unless-stopped
+    command: -c /dev/null --web --docker --logLevel=DEBUG
+    networks:
+      - orchestration
+      - breakout
+    ports:
+      - '80:80'
+      - '8080:8080'
+      # - '443:443'
+    volumes:
+      # - ./traefik.toml:/traefik.toml
+      # - ./acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - 'traefik.backend=traefik'
+      - 'traefik.port=8080'
+      - 'traefik.frontend.rule=Host:traefik.${PROJECT_BASE_URL}'
+
+networks:
+  orchestration:
+    driver: bridge
+    attachable: true
+  breakout:
+    external:
+      name: breakout_d8_docker_default
