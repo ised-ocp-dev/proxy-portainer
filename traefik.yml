@@ -5,8 +5,8 @@ services:
     image: traefik
     restart: unless-stopped
     container_name: "${PROJECT_NAME}_traefik"
-    restart: unless-stopped
-    command: -c /dev/null --web --docker --logLevel=DEBUG
+#    restart: unless-stopped
+#    command: -c /dev/null --web --docker --logLevel=DEBUG
     networks:
       - proxy
 #      - breakout
