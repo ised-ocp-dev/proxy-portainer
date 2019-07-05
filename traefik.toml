@@ -20,7 +20,7 @@ defaultEntryPoints = ["http", "https"]
 
   [entryPoints.dashboard]
   address = ":8080"
-    [entryPoints.http.redirect]
+    [entryPoints.dashboard.redirect]
       entryPoint = "https"
     [entryPoints.dashboard.auth]
       [entryPoints.dashboard.auth.basic]
