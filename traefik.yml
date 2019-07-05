@@ -1,8 +1,8 @@
 version: "3.2"
 
-#secrets:
-#  digitalocean_api_token:
-#    file: /home/wilco/.secrets/certbot/digitalocean.ini
+secrets:
+  digitalocean_api_token:
+    file: ./certbot/digitalocean.ini
 
 services:
   traefik:
@@ -24,7 +24,9 @@ services:
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      DO_AUTH_TOKEN_FILE: ./certbot/digitalocean.ini
+      DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
+    secrets:
+      - digitalocean_api_token
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
