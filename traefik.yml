@@ -30,6 +30,7 @@ services:
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
+#      - 'traefik.frontend.auth.basic="admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
       - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
