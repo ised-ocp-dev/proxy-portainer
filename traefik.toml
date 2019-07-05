@@ -28,3 +28,7 @@ watch = true
   acmeLogging=true
   onDemand=false
   OnHostRule=true
+
+[acme.dnsChallenge]
+  provider = "digitalocean"
+  delayBeforeCheck = 0
