@@ -17,6 +17,7 @@ services:
       - 80:80
       - 443:443
       - 8080:8080
+      - 8081:8081
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
@@ -27,7 +28,7 @@ services:
       - digitalocean_api_token
     labels:
       - 'traefik.backend=traefik'
-      - 'traefik.port=8080'
+      - 'traefik.port=8081'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
       - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
