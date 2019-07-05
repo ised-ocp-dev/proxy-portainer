@@ -1,32 +1,47 @@
 version: "3.2"
 
+#secrets:
+#  digitalocean_api_token:
+#    file: /home/wilco/.secrets/certbot/digitalocean.ini
+
 services:
   traefik:
-    image: traefik
-    restart: unless-stopped
+    image: traefik:latest
+    restart: always
     container_name: "${PROJECT_NAME}_traefik"
 #    restart: unless-stopped
 #    command: -c /dev/null --web --docker --logLevel=DEBUG
     networks:
       - proxy
-#      - breakout
+#      - internal
     ports:
-      - '80:80'
-      - '443:443'
-#      - '8080:8080'
+      - 80:80
+      - 443:443
+    expose:
+      - 8080
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DO_AUTH_TOKEN: /home/wilco/.secrets/certbot/digitalocean.ini
+#          - digitalocean_api_token
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
+      - 'traefik.docker.network=external'
+      - 'traefik.enable=true'
+#      - 'traefik.frontend.headers.forceSTSHeader=true'
+#      - 'traefik.frontend.headers.STSSeconds=315360000'
+#      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+#      - 'traefik.frontend.headers.STSPreload=true'
 
 networks:
   proxy:
     driver: bridge
     attachable: true
+#  internal:
 #  breakout:
 #    external:
 #      name: breakout_d8_docker_default
