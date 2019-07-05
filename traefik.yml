@@ -17,7 +17,8 @@ services:
     ports:
       - 80:80
       - 443:443
-#      - 8080:8080
+    expose:
+      - 8080
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
@@ -30,7 +31,7 @@ services:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
-      - 'traefik.docker.network=external'
+      - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
       - 'traefik.frontend.headers.forceSTSHeader=true'
       - 'traefik.frontend.headers.STSSeconds=315360000'
