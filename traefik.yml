@@ -24,8 +24,7 @@ services:
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DO_AUTH_TOKEN:
-        - digitalocean_api_token
+      - DO_AUTH_TOKEN: digitalocean_api_token
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
