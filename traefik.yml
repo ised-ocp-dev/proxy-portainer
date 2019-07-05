@@ -10,7 +10,7 @@ services:
     restart: always
     container_name: "${PROJECT_NAME}_traefik"
 #    restart: unless-stopped
-    command: -c /dev/null --web --docker --logLevel=DEBUG
+#    command: -c /dev/null --web --docker --logLevel=DEBUG
     networks:
       - proxy
 #      - internal
