@@ -29,6 +29,7 @@ services:
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
+      - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
       - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'

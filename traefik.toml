@@ -35,16 +35,23 @@ defaultEntryPoints = ["http", "https"]
 
   [entryPoints.https]
   address = ":443"
-    [entryPoints.https.tls]
+
+  [entryPoints.https.tls]
+    minVersion = "VersionTLS12"
+    cipherSuites = [
+      "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+      "TLS_RSA_WITH_AES_256_GCM_SHA384"
+    ]
 
 
 [acme]
   email = "wilco@nurf.com"
   storage = "acme.json"
   entryPoint = "https"
-  acmeLogging=true
-  onDemand=false
-  OnHostRule=true
+  acmeLogging = true
+  onDemand = false
+  OnHostRule = true
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
 
 [acme.dnsChallenge]
   provider = "digitalocean"
