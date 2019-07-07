@@ -1,5 +1,5 @@
 
-logLevel = "DEBUG"
+logLevel = "INFO"
 
 defaultEntryPoints = ["http", "https"]
 
@@ -12,7 +12,7 @@ defaultEntryPoints = ["http", "https"]
 # Connection to docker host system (docker.sock)
 [docker]
   endpoint = "unix:///var/run/docker.sock"
-  domain = "tribus.studio"
+  domain = "dev.tribus.studio"
   watch = true
   exposedByDefault = false
 
@@ -20,8 +20,6 @@ defaultEntryPoints = ["http", "https"]
 
   [entryPoints.dashboard]
   address = ":8080"
-    [entryPoints.dashboard.redirect]
-      entryPoint = "https"
     [entryPoints.dashboard.auth]
       [entryPoints.dashboard.auth.basic]
       users = [
@@ -36,12 +34,15 @@ defaultEntryPoints = ["http", "https"]
   [entryPoints.https]
   address = ":443"
 
-  [entryPoints.https.tls]
-    minVersion = "VersionTLS12"
-    cipherSuites = [
-      "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-      "TLS_RSA_WITH_AES_256_GCM_SHA384"
-    ]
+    [entryPoints.https.tls]
+      minVersion = "VersionTLS12"
+      cipherSuites = [
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_RSA_WITH_AES_256_GCM_SHA384"
+      ]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/certs/mindfulhub.crt"
+      keyFile = "/etc/certs/mindfulhub.key"
 
 
 [acme]
