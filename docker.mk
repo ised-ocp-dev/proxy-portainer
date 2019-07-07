@@ -29,6 +29,11 @@ start:
 	@echo "Starting containers for $(PROJECT_NAME) from where you left off..."
 	@docker-compose -f traefik.yml start
 
+## restart	:	Restart container without stopping
+.PHONY: restart
+restart:
+	@docker-compose -f traefik.yml restart
+
 ## stop	:	Stop containers.
 .PHONY: stop
 stop:
