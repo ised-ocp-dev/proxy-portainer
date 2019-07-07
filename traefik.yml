@@ -22,6 +22,7 @@ services:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs/:/etc/certs/:ro # This is a mount of the certs folder
     environment:
       DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
     secrets:
@@ -31,7 +32,7 @@ services:
       - 'traefik.port=8080'
       - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
-      - 'traefik.docker.network=proxy'
+      # - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
       - 'traefik.frontend.headers.forceSTSHeader=true'
       - 'traefik.frontend.headers.STSSeconds=315360000'
@@ -40,8 +41,9 @@ services:
 
 networks:
   proxy:
-    driver: bridge
-    attachable: true
+    external:
+      name: proxy
+
 #  internal:
 #  breakout:
 #    external:
