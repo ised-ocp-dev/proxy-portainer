@@ -18,6 +18,7 @@ services:
       - 443:443
     expose:
       - 8080
+      - 8025
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
@@ -39,10 +40,46 @@ services:
       - 'traefik.frontend.headers.STSIncludeSubdomains=true'
       - 'traefik.frontend.headers.STSPreload=true'
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: "${PROJECT_NAME}_mailhog"
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.backend=${PROJECT_NAME}_mailhog'
+      - 'traefik.port=8025'
+      - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+
+  # opensmtpd:
+  #   container_name: "${PROJECT_NAME}_opensmtpd"
+  #   image: wodby/opensmtpd:$OPENSMTPD_TAG
+  #   expose:
+  #     - 25
+  #   networks:
+  #     - smtp
+    # environment:
+    #   -
+    # labels:
+      # - 'traefik.enable=true'
+      # - 'traefik.docker.network=proxy'
+      # - 'traefik.domain=opensmtpd.${PROJECT_BASE_URL}'
+      # - 'traefik.backend=${PROJECT_NAME}_opensmtpd'
+      # - 'traefik.port=25'
+      # - 'traefik.frontend.rule=Host:opensmtpd.${PROJECT_BASE_URL}'
+    
+      
 networks:
   proxy:
     external:
       name: proxy
+  smtp:
+    external:
+      name: smtp
 
 #  internal:
 #  breakout:
