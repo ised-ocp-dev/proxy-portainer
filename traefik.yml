@@ -1,12 +1,24 @@
 version: "3.2"
 
-secrets:
-  digitalocean_api_token:
-    file: ./certbot/digitalocean.key
+# secrets:
+#   digitalocean_api_token:
+#     file: ./certbot/digitalocean.key
 
 services:
+
+  shell:
+    image: alpine:latest
+    container_name: "${PROJECT_NAME}_shell"
+    ports:
+      - 22:22
+    stdin_open: true
+    tty: true
+    networks:
+      - proxy
+
+
   traefik:
-    image: traefik:latest
+    image: traefik:${TRAEFIK_TAG}
     restart: always
     container_name: "${PROJECT_NAME}_traefik"
 #    restart: unless-stopped
@@ -24,10 +36,10 @@ services:
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
       - ./certs/:/etc/certs/:ro # This is a mount of the certs folder
-    environment:
-      DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
-    secrets:
-      - digitalocean_api_token
+    # environment:
+    #   DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
+    # secrets:
+    #   - digitalocean_api_token
     labels:
       - 'traefik.backend=traefik'
       - 'traefik.port=8080'
@@ -35,10 +47,10 @@ services:
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
       # - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
-      - 'traefik.frontend.headers.forceSTSHeader=true'
-      - 'traefik.frontend.headers.STSSeconds=315360000'
-      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-      - 'traefik.frontend.headers.STSPreload=true'
+      # - 'traefik.frontend.headers.forceSTSHeader=true'
+      # - 'traefik.frontend.headers.STSSeconds=315360000'
+      # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+      # - 'traefik.frontend.headers.STSPreload=true'
 
   mailhog:
     image: mailhog/mailhog
@@ -71,15 +83,29 @@ services:
       # - 'traefik.backend=${PROJECT_NAME}_opensmtpd'
       # - 'traefik.port=25'
       # - 'traefik.frontend.rule=Host:opensmtpd.${PROJECT_BASE_URL}'
-    
-      
+
+  portainer:
+    image: portainer/portainer
+    container_name: "${PROJECT_NAME}_portainer"
+    command: --no-auth -H unix:///var/run/docker.sock
+    ports:
+      - '8000:9000'
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - 'traefik.backend=portainer'
+      - 'traefik.port=9000'
+      - 'traefik.frontend.rule=Host:portainer.${PROJECT_BASE_URL}'
+
 networks:
   proxy:
     external:
       name: proxy
-  smtp:
-    external:
-      name: smtp
+  # smtp:
+  #   external:
+  #     name: smtp
 
 #  internal:
 #  breakout:

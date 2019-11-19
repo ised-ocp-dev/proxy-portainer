@@ -49,6 +49,12 @@ prune:
 	@echo "Removing containers for $(PROJECT_NAME)..."
 	@docker-compose -f traefik.yml down -v $(filter-out $@,$(MAKECMDGOALS))
 
+## shell		:  Access `php` container via shell.
+.PHONY: shell
+shell:
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_shell' --format "{{ .ID }}") sh
+
+
 ## ps	:	List running containers.
 .PHONY: ps
 ps:

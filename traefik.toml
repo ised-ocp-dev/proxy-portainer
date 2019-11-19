@@ -1,10 +1,10 @@
 
-logLevel = "INFO"
+logLevel = "ERROR"
 
 defaultEntryPoints = ["http", "https"]
 
 [api]
-  entryPoint = "dashboard"
+  entryPoint = "api"
   dashboard = true
 
 [retry]
@@ -12,7 +12,7 @@ defaultEntryPoints = ["http", "https"]
 # Connection to docker host system (docker.sock)
 [docker]
   endpoint = "unix:///var/run/docker.sock"
-  domain = "dev.tribus.studio"
+  domain = "docker.nurf.com"
   watch = true
   exposedByDefault = false
 
@@ -20,11 +20,11 @@ defaultEntryPoints = ["http", "https"]
 
   [entryPoints.dashboard]
   address = ":8080"
-    [entryPoints.dashboard.auth]
-      [entryPoints.dashboard.auth.basic]
-      users = [
-        "admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"
-      ]
+    # [entryPoints.dashboard.auth]
+    #   [entryPoints.dashboard.auth.basic]
+    #   users = [
+    #     "admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"
+    #   ]
 
   [entryPoints.http]
   address = ":80"
@@ -40,9 +40,9 @@ defaultEntryPoints = ["http", "https"]
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_RSA_WITH_AES_256_GCM_SHA384"
       ]
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/etc/certs/mindfulhub.crt"
-      keyFile = "/etc/certs/mindfulhub.key"
+      # [[entryPoints.https.tls.certificates]]
+      # certFile = "/etc/certs/mindfulhub.crt"
+      # keyFile = "/etc/certs/mindfulhub.key"
 
 
 [acme]
@@ -54,6 +54,9 @@ defaultEntryPoints = ["http", "https"]
   OnHostRule = true
   caServer = "https://acme-v02.api.letsencrypt.org/directory"
 
-[acme.dnsChallenge]
-  provider = "digitalocean"
-  delayBeforeCheck = 0
+# [acme.dnsChallenge]
+#   provider = "digitalocean"
+#   delayBeforeCheck = 0
+
+[acme.httpChallenge]
+entryPoint = "http"
