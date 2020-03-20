@@ -1,37 +1,3 @@
-# Ignore configuration files that may contain sensitive information.
-local.settings.php
-local.drush.yml
-local.site.yml
-local.services.yml
-tests/behat/local.yml
-box/local.config.yml
-*.local
-local.blt.yml
-
-# Ignore drupal core.
-docroot/core
-
-# Ignore paths that contain user-generated content.
-docroot/sites/*/files
-/files-private
-docroot/sites/*/private
-
-# Ignore contrib modules. These should be created during build process.
-docroot/modules/contrib
-docroot/themes/contrib
-docroot/profiles/contrib
-docroot/libraries
-drush/Commands
-
-# Ignore custom theme build artifacts
-docroot/themes/custom/*/node_modules
-docroot/themes/custom/*/css
-docroot/themes/custom/*/styleguide
-docroot/themes/custom/*/dist
-docroot/themes/custom/*/pattern-lab
-docroot/themes/custom/*/build
-docroot/themes/custom/*/npm-debug.log
-
 # Ignore build artifacts
 deployment_identifier
 /deploy
@@ -99,7 +65,8 @@ tramp
 .\#*
 
 # User-specific stuff:
-.idea/
+.idea
+.idea/*
 
 #XHProf
 xhprof_*
@@ -133,17 +100,8 @@ atlassian-ide-plugin.xml
 #NPM
 npm-debug.log
 
-# Drush 9 Checksums
-drush/sites/.checksums
-
-# Deprecation detector rules
-.rules
-
 # Config files
 Vagrantfile
 config/default/.htaccess
 drush/sites/*
-
-# Additional Ignores
-blt/project.yml
 
