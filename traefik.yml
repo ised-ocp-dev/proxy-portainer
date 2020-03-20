@@ -18,39 +18,36 @@ services:
 
 
   traefik:
-    image: traefik:${TRAEFIK_TAG}
-    restart: always
-    container_name: "${PROJECT_NAME}_traefik"
-#    restart: unless-stopped
+    image: traefik:v2.0
+    # command: --api.insecure=true --providers.docker
+    restart: unless-stopped
     networks:
       - proxy
-#      - internal
     ports:
       - 80:80
       - 443:443
-    expose:
-      - 8080
-      - 8025
+      # - 8000:80
+      # - 8080:8080
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./certs/:/etc/certs/:ro # This is a mount of the certs folder
+      # - ./certs/:/etc/certs/:ro # This is a mount of the certs folder
     # environment:
     #   DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
     # secrets:
     #   - digitalocean_api_token
-    labels:
-      - 'traefik.backend=traefik'
-      - 'traefik.port=8080'
-      - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
-      - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
-      # - 'traefik.docker.network=proxy'
-      - 'traefik.enable=true'
-      # - 'traefik.frontend.headers.forceSTSHeader=true'
-      # - 'traefik.frontend.headers.STSSeconds=315360000'
-      # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-      # - 'traefik.frontend.headers.STSPreload=true'
+    # labels:
+    #   - 'traefik.backend=traefik'
+    #   - 'traefik.port=8080'
+    #   - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
+    #   - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
+    #   # - 'traefik.docker.network=proxy'
+    #   - 'traefik.enable=true'
+    #   # - 'traefik.frontend.headers.forceSTSHeader=true'
+    #   # - 'traefik.frontend.headers.STSSeconds=315360000'
+    #   # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+    #   # - 'traefik.frontend.headers.STSPreload=true'
 
   mailhog:
     image: mailhog/mailhog
@@ -61,11 +58,8 @@ services:
     networks:
       - proxy
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.docker.network=proxy'
-      - 'traefik.backend=${PROJECT_NAME}_mailhog'
-      - 'traefik.port=8025'
-      - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+      - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
+      - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
 
   # opensmtpd:
   #   container_name: "${PROJECT_NAME}_opensmtpd"
@@ -88,16 +82,14 @@ services:
     image: portainer/portainer
     container_name: "${PROJECT_NAME}_portainer"
     command: --no-auth -H unix:///var/run/docker.sock
-    ports:
-      - '8000:9000'
+    # ports:
+    #   - '8000:9000'
     networks:
       - proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      - 'traefik.backend=portainer'
-      - 'traefik.port=9000'
-      - 'traefik.frontend.rule=Host:portainer.${PROJECT_BASE_URL}'
+      - "traefik.http.routers.${PROJECT_NAME}_portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)"
 
 networks:
   proxy:
