@@ -6,15 +6,15 @@ version: "3.2"
 
 services:
 
-  shell:
-    image: alpine:latest
-    container_name: "${PROJECT_NAME}_shell"
-    ports:
-      - 22:22
-    stdin_open: true
-    tty: true
-    networks:
-      - proxy
+  # shell:
+  #   image: alpine:latest
+  #   container_name: "${PROJECT_NAME}_shell"
+  #   ports:
+  #     - 22:22
+  #   stdin_open: true
+  #   tty: true
+  #   networks:
+  #     - proxy
 
 
   traefik:
@@ -45,7 +45,7 @@ services:
       - 'traefik.port=8080'
       - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
       - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
-      # - 'traefik.docker.network=proxy'
+      - 'traefik.docker.network=proxy'
       - 'traefik.enable=true'
       # - 'traefik.frontend.headers.forceSTSHeader=true'
       # - 'traefik.frontend.headers.STSSeconds=315360000'
