@@ -10,6 +10,13 @@
 
 [api]
   insecure = true
+  dashboard = true
+
+#[entryPoints.dashboard]
+#  address = ":8080"
+#  [entryPoints.dashboard.auth]
+#    [entryPoints.dashboard.auth.basic]
+#      users = ["admin:$apr1$YXSW3aIw$mhZkCYMYHOS6/9BY5TAct."]
 
 [entryPoints.web]
   address = ":80"

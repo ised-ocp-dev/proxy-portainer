@@ -6,28 +6,28 @@ version: "3.2"
 
 services:
 
-  shell:
-    image: alpine:latest
-    container_name: "${PROJECT_NAME}_shell"
-    ports:
-      - 22:22
-    stdin_open: true
-    tty: true
-    networks:
-      - proxy
+#  shell:
+#    image: alpine:latest
+#    container_name: "${PROJECT_NAME}_shell"
+#    ports:
+#      - 22:22
+#    stdin_open: true
+#    tty: true
+#    networks:
+#      - proxy
 
 
   traefik:
-    image: traefik:v2.0
+    image: traefik:latest
     # command: --api.insecure=true --providers.docker
     restart: unless-stopped
     networks:
       - proxy
     ports:
-      - 80:80
-      - 443:443
-      # - 8000:80
-      # - 8080:8080
+      - 8888:80
+      - 4433:443
+      #- 8000:80
+      - 8080:8080
     volumes:
       - ./traefik.toml:/traefik.toml
       - ./acme.json:/acme.json
@@ -37,29 +37,29 @@ services:
     #   DO_AUTH_TOKEN_FILE: /run/secrets/digitalocean_api_token
     # secrets:
     #   - digitalocean_api_token
-    # labels:
-    #   - 'traefik.backend=traefik'
-    #   - 'traefik.port=8080'
-    #   - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
-    #   - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
-    #   # - 'traefik.docker.network=proxy'
+    #labels:
+    #  - 'traefik.backend=traefik'
+    #  - 'traefik.port=8080'
+    #  - 'traefik.domain=monitor.${PROJECT_BASE_URL}'
+    #  - 'traefik.frontend.rule=Host:monitor.${PROJECT_BASE_URL}'
+    #  - 'traefik.docker.network=proxy'
     #   - 'traefik.enable=true'
     #   # - 'traefik.frontend.headers.forceSTSHeader=true'
     #   # - 'traefik.frontend.headers.STSSeconds=315360000'
     #   # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
     #   # - 'traefik.frontend.headers.STSPreload=true'
 
-  mailhog:
-    image: mailhog/mailhog
-    container_name: "${PROJECT_NAME}_mailhog"
-    ports:
-      - '8025:8025'
-      - '1025:1025'
-    networks:
-      - proxy
-    labels:
-      - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
-      - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
+#  mailhog:
+#    image: mailhog/mailhog
+#    container_name: "${PROJECT_NAME}_mailhog"
+#    ports:
+#      - '8025:8025'
+#      - '1025:1025'
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
+#      - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
 
   # opensmtpd:
   #   container_name: "${PROJECT_NAME}_opensmtpd"
