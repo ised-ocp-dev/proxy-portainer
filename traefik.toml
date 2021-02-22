@@ -1,62 +1,49 @@
+## static configuration
+# traefik.toml
 
-logLevel = "ERROR"
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = true
 
-defaultEntryPoints = ["http", "https"]
+[log]
+  level = "DEBUG"
 
 [api]
-  entryPoint = "api"
+  insecure = true
   dashboard = true
 
-[retry]
+#[entryPoints.dashboard]
+#  address = ":8080"
+#  [entryPoints.dashboard.auth]
+#    [entryPoints.dashboard.auth.basic]
+#      users = ["admin:$apr1$YXSW3aIw$mhZkCYMYHOS6/9BY5TAct."]
 
-# Connection to docker host system (docker.sock)
-[docker]
-  endpoint = "unix:///var/run/docker.sock"
-  domain = "docker.nurf.com"
-  watch = true
-  exposedByDefault = false
-
-[entryPoints]
-
-  [entryPoints.dashboard]
-  address = ":8080"
-    # [entryPoints.dashboard.auth]
-    #   [entryPoints.dashboard.auth.basic]
-    #   users = [
-    #     "admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"
-    #   ]
-
-  [entryPoints.http]
+[entryPoints.web]
   address = ":80"
-    [entryPoints.http.redirect]
-      entryPoint = "https"
 
-  [entryPoints.https]
+[entryPoints.web-secure]
   address = ":443"
 
-    [entryPoints.https.tls]
-      minVersion = "VersionTLS12"
-      cipherSuites = [
-        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_RSA_WITH_AES_256_GCM_SHA384"
-      ]
-      # [[entryPoints.https.tls.certificates]]
-      # certFile = "/etc/certs/mindfulhub.crt"
-      # keyFile = "/etc/certs/mindfulhub.key"
+##---------------------##
 
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
 
-[acme]
-  email = "wilco@nurf.com"
-  storage = "acme.json"
-  entryPoint = "https"
-  acmeLogging = true
-  onDemand = false
-  OnHostRule = true
-  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+# [certificatesResolvers.sample.acme]
+#   email = "wilco@nurf.com"
+#   storage = "acme.json"
+#   [certificatesResolvers.sample.acme.httpChallenge]
+#     # used during the challenge
+#     entryPoint = "web"
 
-# [acme.dnsChallenge]
-#   provider = "digitalocean"
-#   delayBeforeCheck = 0
+# [http.routers.api]
+#   rule = "Host('traefik.docker.localhost')"
+#   entrypoints = ["web-secure"]
+#   service = "api@proxy"
+#   middlewares = ["myAuth"]
+#   [http.routers.api.tls]
 
-[acme.httpChallenge]
-entryPoint = "http"
+# [http.middlewares.myAuth.basicAuth]
+#   users = [
+#     "admin:$apr1$4aB5vCSt$t2kBK2Vxu81tc.mvzi4he1"
+#   ]
