@@ -30,7 +30,7 @@
   endpoint = "unix:///var/run/docker.sock"
 
 # [certificatesResolvers.sample.acme]
-#   email = "wilco@nurf.com"
+#   email = "temp@test.test"
 #   storage = "acme.json"
 #   [certificatesResolvers.sample.acme.httpChallenge]
 #     # used during the challenge
